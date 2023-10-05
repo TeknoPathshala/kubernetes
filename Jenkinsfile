@@ -20,19 +20,7 @@ pipeline {
       }
     }
 
-    stage('Pushing Image') {
-      environment {
-        registryCredential = 'DockerHub' // Replace with the actual credential ID
-      }
-      steps{
-        script {
-          docker.withRegistry('https://hub.docker.com', registryCredential) {
-            dockerImage.push("latest")
-          }
-        }
-      }
-    }
-
+    
     stage('Deploying App to Kubernetes') {
       steps {
         script {
