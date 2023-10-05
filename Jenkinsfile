@@ -1,5 +1,4 @@
 pipeline {
-
   environment {
     dockerimagename = "teknopathshala/react-app"
     dockerImage = ""
@@ -8,10 +7,9 @@ pipeline {
   agent any
 
   stages {
-
     stage('Checkout Source') {
       steps {
-        git 'https://github.com/TeknoPathshala/kubernetes'
+        git branch: 'main', url: 'https://github.com/TeknoPathshala/kubernetes'
       }
     }
 
@@ -23,6 +21,19 @@ pipeline {
       }
     }
 
+    stage('Pushing Image') {
+      environment {
+        registryCredential = 'dockerhub-credentials'
+      }
+      steps{
+        script {
+          docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+            dockerImage.push("latest")
+          }
+        }
+      }
+    }
+
     stage('Deploying App to Kubernetes') {
       steps {
         script {
@@ -30,7 +41,5 @@ pipeline {
         }
       }
     }
-
   }
-
 }
