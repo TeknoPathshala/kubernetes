@@ -1,7 +1,6 @@
 pipeline {
   environment {
     dockerimagename = "teknopathshala/react-app"
-    dockerImage = ""
   }
 
   agent any
@@ -23,7 +22,7 @@ pipeline {
 
     stage('Pushing Image') {
       environment {
-        registryCredential = 'DockerHub'
+        registryCredential = 'DockerHub' // Replace with the actual credential ID
       }
       steps{
         script {
